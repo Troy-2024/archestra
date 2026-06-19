@@ -122,7 +122,10 @@ function LogoRow({
         setPreview(base64);
         try {
           const result = await upload({ [field]: base64 });
-          if (!result) throw new Error("Upload failed");
+          if (!result) {
+            setPreview(current || null);
+            return;
+          }
           onChange?.();
         } catch {
           setPreview(current || null);
@@ -136,7 +139,7 @@ function LogoRow({
   const handleRemove = useCallback(async () => {
     try {
       const result = await remove({ [field]: null });
-      if (!result) throw new Error("Removal failed");
+      if (!result) return;
       setPreview(null);
       onChange?.();
     } catch {
