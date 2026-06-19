@@ -61,7 +61,10 @@ export function ImageUpload({
           const result = await uploadImage({
             [fieldName]: base64,
           });
-          if (!result) throw new Error("Upload failed");
+          if (!result) {
+            setPreview(currentImage || null);
+            return;
+          }
           onImageChange?.();
         } catch {
           setPreview(currentImage || null);
@@ -75,7 +78,7 @@ export function ImageUpload({
   const handleRemove = useCallback(async () => {
     try {
       const result = await removeImage({ [fieldName]: null });
-      if (!result) throw new Error("Removal failed");
+      if (!result) return;
       setPreview(null);
       onImageChange?.();
     } catch {
