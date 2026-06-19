@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useSession } from "@/lib/auth/auth.query";
 import { authClient } from "@/lib/clients/auth/auth-client";
+import { getApiErrorMessage } from "@/lib/utils/api";
 import { environmentKeys } from "./environment.query";
 import { handleApiError } from "./utils";
 
@@ -322,7 +323,9 @@ export function useUpdateAppearanceSettings(
         await archestraApiSdk.updateAppearanceSettings({ body: data });
 
       if (error) {
-        toast.error(onErrorMessage);
+        toast.error(onErrorMessage, {
+          description: getApiErrorMessage(error),
+        });
         return null;
       }
 
